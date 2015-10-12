@@ -1,0 +1,13 @@
+*.pyc
+
+*.egg-info/
+build/
+dist/
+
+.cache
+.coverage
+.tox/
+
+venv/
+
+.DS_Store
