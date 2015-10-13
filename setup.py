@@ -3,7 +3,7 @@ import setuptools
 
 setuptools.setup(
     name='hydrant',
-    version='0.2.0',
+    version='0.3.0',
     url='https://github.com/bwbaugh/hydrant',
     license='BSD',
     author='Wesley Baugh',
