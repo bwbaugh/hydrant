@@ -2,6 +2,14 @@
 hydrant
 =======
 
+.. image:: https://travis-ci.org/bwbaugh/hydrant.svg?branch=master
+    :target: https://travis-ci.org/bwbaugh/hydrant
+    :alt: Build Status
+
+.. image:: https://coveralls.io/repos/bwbaugh/hydrant/badge.svg
+    :target: https://coveralls.io/r/bwbaugh/hydrant
+    :alt: Code Coverage Status
+
 Redirects stdin to Amazon Kinesis Firehose.
 
 
