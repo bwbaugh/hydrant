@@ -32,10 +32,14 @@ class TestMain(object):
 
     def _call(
             self, runner, delivery_stream='my-test-delivery-stream-name',
-            input='hello world\n', region=None):
+            input='hello world\n', region=None, print_record_id=None):
         args = []
         if region is not None:
             args.extend(['--region', region])
+        if print_record_id is True:
+            args.append('--print-record-id')
+        elif print_record_id is False:
+            args.append('--no-print-record-id')
         args.append(delivery_stream)
         return runner.invoke(
             cli=cli.main,
@@ -94,7 +98,7 @@ class TestMain(object):
         assert kwargs['Record'] == {'Data': stdin}
 
     def test_two_records(self, runner, mock_firehose_client):
-        # Given a single record
+        # Given two records
         stdin = 'foo\nbar\n'
         # When we run the command
         result = self._call(runner=runner, input=stdin)
@@ -107,6 +111,48 @@ class TestMain(object):
         assert kwargs['Record'] == {'Data': 'foo\n'}
         args, kwargs = mock_firehose_client.put_record.call_args_list[1]
         assert kwargs['Record'] == {'Data': 'bar\n'}
+
+    def test_print_record_id(self, runner, mock_firehose_client):
+        # Given multiple records
+        stdin = 'hello world\n' * 3
+        # And the print record-ID flag is enabled
+        print_record_id = True
+        # And a fake record-ID is generated for each record
+
+        def fake_id_generator(*args, **kwargs):
+            counter = 1
+            while True:
+                yield {'RecordId': unicode(counter)}
+                counter += 1
+        mock_firehose_client.put_record.side_effect = iter(fake_id_generator())
+        # When we run the command
+        result = self._call(
+            runner=runner,
+            input=stdin,
+            print_record_id=print_record_id,
+        )
+        # Then there should be no errors
+        assert result.exit_code == 0
+        assert not result.exception
+        # And the record-ID should be printed for each input line
+        assert result.output == '1\n2\n3\n'
+
+    def test_no_print_record_id(self, runner, mock_firehose_client):
+        # Given multiple records
+        stdin = 'hello world\n' * 3
+        # But the print record-ID flag is disabled
+        print_record_id = False
+        # When we run the command
+        result = self._call(
+            runner=runner,
+            input=stdin,
+            print_record_id=print_record_id,
+        )
+        # Then there should be no errors
+        assert result.exit_code == 0
+        assert not result.exception
+        # And the record-ID should not be printed
+        assert not result.output
 
 
 @pytest.mark.usefixtures('patch_get_session')

@@ -9,6 +9,12 @@ This project adheres to `Semantic Versioning <http://semver.org/>`_.
 Unreleased
 **********
 
+Added
+=====
+
+* A ``--print-record-id`` option to output the unique string assigned
+  to each record.
+
 
 *******************
 v0.2.0 - 2015-10-12
