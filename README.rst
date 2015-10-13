@@ -12,6 +12,14 @@ hydrant
 
 Redirects stdin to Amazon Kinesis Firehose.
 
+The application submits each record one at a time,
+which limits the throughput.
+A future version might batch records together for performance,
+but until then
+beware of using high throughput streams
+(15 records per second or more).
+Running from within EC2 will allow higher throughput.
+
 
 ************
 Installation

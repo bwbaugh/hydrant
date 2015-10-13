@@ -32,6 +32,15 @@ def main(delivery_stream, region, print_record_id):
     separated by a newline character. Each line will be sent as a
     separate record, so keep in mind that Kinesis Firehose will round
     up each record to the next 5 KB in size.
+
+    The application submits each record one at a time, which limits the
+    throughput to roughly ~15 records per second.
+
+    The application submits each record one at a time, which limits the
+    throughput. A future version might batch records together for
+    performance, but until then beware of using high throughput streams
+    (15 records per second or more). Running from within EC2 will allow
+    higher throughput.
     """
     client = _get_firehose_client(region_name=region)
     for line in click.get_binary_stream('stdin'):
