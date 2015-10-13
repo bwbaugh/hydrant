@@ -12,6 +12,7 @@ setuptools.setup(
     long_description=open('README.rst').read(),
     packages=setuptools.find_packages(exclude=['tests']),
     install_requires=[
+        'botocore>=1.2.9',
         'click',
     ],
     entry_points={

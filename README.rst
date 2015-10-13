@@ -20,7 +20,14 @@ Install into a virtualenv.
 Usage
 *****
 
-To use it:
+Pipe newline separated records into hydrant,
+which will send each record to the delivery stream:
+
+.. code-block:: bash
+
+    $ producer | hydrant my-firehose-stream
+
+Read the help text:
 
 .. code-block:: bash
 
