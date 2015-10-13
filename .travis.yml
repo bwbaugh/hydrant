@@ -10,3 +10,12 @@ script:
 after_success:
 - coveralls
 sudo: false
+deploy:
+  provider: pypi
+  user: bwbaugh
+  password:
+    secure: qbFIGEpAx7KUX8kivY52OAyqC+JxeE2tzxy386daYvIeS/BS1cQDG7wXaP4sNkOlkC651sSZLKtPuIyDSlj1CKco54eCSrPQiNBgXDAh0GQh+zqq/phnwAbwYZPWCnvxFpNWmEe3qQDIqFhIkGSAT1Gqg/LW/iCaK9mo+m8QeiiufirplCGGU5EkcZviMO74dopPVuXOVTP/BY4tQD9x751pnNCyLVbRft5c0O8DJH442Hl1PjxkqaBLJJFDJdXwXwKFr9DyVobJHBiJ/ut+cP3HEtr9V1DdjCIs6HhQbcuowMC3lz89gnufCL9LGwU34Zx0NrCn7wNr9HCR4ZVIpTbjSRpjORo6NmAITb30zpnm3140Gak64BKCvT6+JQTICEfbLwvpz5fUOx902sJ4LnyoO6oIbKR83AD8lHdlxboOBB31fMV0ggmvp2YNuL4yGnJTH+aNaiECf0v8mLRCTwyG5879r4ZbXwWBUWVY43A+CkcSLBug+BPas+7QzbUA5Xdxg45utV/RaHNzE2OOzpt5AH01xSfeRXeb1EeSZYPq2vuG5OiwXaPZq/yRpiQg/O1pyJY6+BlWcRGoeCHXITPWhv96um7oQIV2OfeEnf5oGW1MeFo72P1usopXaIiXUaHJviMo88fxEG6g9X26AdpivFdqXgYlp6YnOLrwCEk=
+  distributions: "sdist bdist_wheel"
+  on:
+    tags: true
+    repo: bwbaugh/hydrant
