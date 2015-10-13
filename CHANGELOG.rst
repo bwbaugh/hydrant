@@ -14,6 +14,7 @@ Added
 
 * Accepts newline separated data and puts each record to the stream
   individually.
+* Set the AWS region with an option, defaulting to us-east-1.
 
 
 *******************

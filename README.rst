@@ -27,7 +27,13 @@ which will send each record to the delivery stream:
 
     $ producer | hydrant my-firehose-stream
 
-Read the help text:
+Specify a region if not using ``us-east-1``:
+
+.. code-block:: bash
+
+    $ producer | hydrant --region='us-west-2' my-firehose-stream
+
+Read the help text for more information:
 
 .. code-block:: bash
 

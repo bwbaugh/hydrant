@@ -32,12 +32,40 @@ class TestMain(object):
 
     def _call(
             self, runner, delivery_stream='my-test-delivery-stream-name',
-            input='hello world\n'):
+            input='hello world\n', region=None):
+        args = []
+        if region is not None:
+            args.extend(['--region', region])
+        args.append(delivery_stream)
         return runner.invoke(
             cli=cli.main,
-            args=[delivery_stream],
+            args=args,
             input=input,
         )
+
+    def test_client_region_default(self, runner, patch_get_firehose_client):
+        # When we run the command
+        result = self._call(runner=runner)
+        # Then there should be no errors
+        assert result.exit_code == 0
+        assert not result.exception
+        # And the client should use the default region
+        assert patch_get_firehose_client.call_count == 1
+        args, kwargs = patch_get_firehose_client.call_args
+        assert kwargs['region_name'] == cli.DEFAULT_AWS_REGION
+
+    def test_client_region_override(self, runner, patch_get_firehose_client):
+        # Given a region
+        region = 'us-west-2'
+        # When we run the command
+        result = self._call(runner=runner, region=region)
+        # Then there should be no errors
+        assert result.exit_code == 0
+        assert not result.exception
+        # And the client should use the requested region
+        assert patch_get_firehose_client.call_count == 1
+        args, kwargs = patch_get_firehose_client.call_args
+        assert kwargs['region_name'] == region
 
     def test_delivery_stream_name(self, runner, mock_firehose_client):
         # Given a delivery stream name
@@ -104,6 +132,7 @@ class TestGetFirehoseClient(object):
 
     def _call(self, **kwargs):
         parameters = dict(
+            region_name=mock.sentinel.region_name,
         )
         parameters.update(kwargs)
         return cli._get_firehose_client(**parameters)
@@ -111,7 +140,7 @@ class TestGetFirehoseClient(object):
     @pytest.mark.parametrize(
         argnames='field_name,expected_value',
         argvalues=[
-            ('region_name', 'us-west-2'),
+            ('region_name', mock.sentinel.region_name),
             ('service_name', 'firehose'),
         ],
         ids=['service_name', 'region_name'],
