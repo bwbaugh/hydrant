@@ -5,7 +5,6 @@ setuptools.setup(
     name='hydrant',
     version='0.3.0',
     url='https://github.com/bwbaugh/hydrant',
-    license='BSD',
     author='Wesley Baugh',
     author_email='wesley@bwbaugh.com',
     description='Redirects stdin to Amazon Kinesis Firehose.',
